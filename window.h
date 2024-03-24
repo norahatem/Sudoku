@@ -9,6 +9,12 @@
 #include <QPushButton>
 #include <QFileDialog>
 
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+#include <QLabel>
+#include <QFrame>
+
 #include <vector>
 #include <map>
 
@@ -28,6 +34,9 @@ protected:
 public slots:
     // event handlers (in Qt "slots")
     // ...
+    void openButtonClicked();
+    void checkButtonClicked();
+    void clearButtonClicked();
 private:
 
 signals:
