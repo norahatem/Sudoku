@@ -37,15 +37,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
     mainLayout->addStretch(1);
     mainLayout->addLayout(buttonLayout);
 
-    //move buttons to be below the board
-    //openButton->move(GRID/6.0, GRID + GRID/40.0);
-
     //connect buttons signals to slots
-    //connect the open button to the slot open button clicked
     connect(openButton, &QPushButton::clicked, this, &Window::openButtonClicked);
-    //connect the check button to the slot check button clicked
     connect(checkButton, &QPushButton::clicked, this, &Window::checkButtonClicked);
-    //connect the clear button to the slot clear button clicked
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
 
 }
@@ -59,8 +53,6 @@ void Window::paintEvent(QPaintEvent * event)
     pen.setWidth(4);
     painter.setPen(pen);
     painter.setFont(font);
-    // painter.drawText(120,200,tr("1"));
-
 
     //draw the grid of the sudoku
     for(int i= 0; i<GRID_SIZE+1; i++){
@@ -70,7 +62,6 @@ void Window::paintEvent(QPaintEvent * event)
         if (i % 3 == 0)
             painter.setPen(QPen(QColor(THICKLINESCOLOR),3));
 
-
         // Draw horizontal lines
         painter.drawLine(x_offset, (i * (GRID / 9.0)) + x_offset, GRID+x_offset,(i * (GRID / 9.0))+x_offset);
 
@@ -79,7 +70,7 @@ void Window::paintEvent(QPaintEvent * event)
     }
 
 
-    //code to print the board
+    //code to print the board (numbers)
     for(int row = 0; row<9; row++){
         for(int col =0; col<9; col++){
             if(sud.getCell(row, col) != '0'){
@@ -109,7 +100,14 @@ void Window::openButtonClicked(){
 
 }
 void Window::checkButtonClicked(){
+    QString msg;
     qDebug() << "Check button clicked";
+    if(sud.isBoardComplete())
+        msg = "Board is complete";
+    else
+        msg = "Board is not complete";
+
+    QMessageBox::information(this, "Check board", msg);
 }
 void Window::clearButtonClicked(){
     qDebug() << "Clear button clicked";

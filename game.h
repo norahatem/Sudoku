@@ -19,6 +19,8 @@ public:
     void clearBoard();
     void printBoard();
     char getCell(int row, int col);
+    bool isBoardComplete();
+    bool isValidInput();
 
 private:
     char s_game[GRID_SIZE][GRID_SIZE];

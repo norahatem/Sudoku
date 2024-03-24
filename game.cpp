@@ -77,3 +77,16 @@ void game::printBoard(){
 char game::getCell(int row, int col){
     return s_game[row][col];
 }
+
+bool game::isBoardComplete(){
+    for(int row = 0; row <9; row++){
+        for(int col = 0; col<9; col++){
+            if(s_game[row][col] == '0')
+                return false;
+        }
+    }
+    return true;
+}
+bool game::isValidInput(){
+
+}
