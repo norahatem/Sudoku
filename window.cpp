@@ -48,10 +48,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
     //connect the clear button to the slot clear button clicked
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
 
-
-    //initialize a sudoku game and get the board
-    // game sud;
-    sud.getBoard(board);
 }
 
 void Window::paintEvent(QPaintEvent * event)
@@ -86,8 +82,8 @@ void Window::paintEvent(QPaintEvent * event)
     //code to print the board
     for(int row = 0; row<9; row++){
         for(int col =0; col<9; col++){
-            if(board[row][col] != '0'){
-                QString buffer = QString(board[row][col]);
+            if(sud.getCell(row, col) != '0'){
+                QString buffer = QString(sud.getCell(row,col));
                 painter.drawText((GRID / GRID_SIZE * col + GRID / ((GRID_SIZE * 2) + 2)) + OFFSET,
                                  (GRID / GRID_SIZE * row + GRID / ((GRID_SIZE * 2) - 5)) + OFFSET, buffer);
             }
@@ -108,8 +104,6 @@ void Window::openButtonClicked(){
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Puzzle"), "D:\\games", tr("Text Files (*.txt)"));
     //call the setBaord from file for the original sudoku which is declared as game
     sud.setBoardFromFile(fileName.toStdString());
-    //pass the board to be updated
-    sud.getBoard(board);
     //must call update(), otherwise widget will not be updated
     update();
 
@@ -121,7 +115,5 @@ void Window::clearButtonClicked(){
     qDebug() << "Clear button clicked";
     //clear the sudoku board
     sud.clearBoard();
-    //update our board
-    sud.getBoard(board);
     update();
 }
