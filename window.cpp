@@ -8,25 +8,11 @@
 #include <map>
 #include <vector>
 
-#define GRID_SIZE 9
-#define GRID 600.0
-#define OFFSET 0
-#define x_offset 0
-#define y_offset 0
-
-#define BOARDTEXTCOLOR "#184e77"
-#define THICKLINESCOLOR "#184e77"
-#define THINLINECOLOR "#184e77"
-#define BUTTONTEXTCOLOR "#d9ed92"
-#define BACKGROUNDCOLOR "#d9ed92"
-#define BUTTONBACKGROUNDCOLOR "#184e77"
-#define ERROR "#ff0000"
-
 using namespace std;
 
 Window::Window(QWidget *parent) : QWidget(parent)
 {
-    setMinimumSize(GRID + 2*OFFSET, GRID + GRID/10.0);
+    setFixedSize(GRID + 2*OFFSET, GRID + GRID/10.0);
     setWindowTitle("Sudoku");
     //layouts
     auto *mainLayout = new QVBoxLayout(this);
@@ -50,14 +36,21 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     mainLayout->addStretch(1);
     mainLayout->addLayout(buttonLayout);
+
     //move buttons to be below the board
     //openButton->move(GRID/6.0, GRID + GRID/40.0);
 
     //connect buttons signals to slots
     //connect the open button to the slot open button clicked
     connect(openButton, &QPushButton::clicked, this, &Window::openButtonClicked);
+    //connect the check button to the slot check button clicked
     connect(checkButton, &QPushButton::clicked, this, &Window::checkButtonClicked);
+    //connect the clear button to the slot clear button clicked
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
+
+
+    game sud;
+    sud.getBoard(board);
 }
 
 void Window::paintEvent(QPaintEvent * event)
@@ -86,6 +79,18 @@ void Window::paintEvent(QPaintEvent * event)
 
         // Draw vertical lines
         painter.drawLine((i * (GRID / 9.0))+y_offset, y_offset,( i * (GRID / 9.0))+y_offset, GRID +y_offset);
+    }
+
+
+    //code to print the board
+    for(int row = 0; row<9; row++){
+        for(int col =0; col<9; col++){
+            if(board[row][col] != '0'){
+                QString buffer = QString(board[row][col]);
+                painter.drawText((GRID / GRID_SIZE * col + GRID / ((GRID_SIZE * 2) + 2)) + OFFSET,
+                                 (GRID / GRID_SIZE * row + GRID / ((GRID_SIZE * 2) - 5)) + OFFSET, buffer);
+            }
+        }
     }
 }
 

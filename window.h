@@ -18,6 +18,22 @@
 #include <vector>
 #include <map>
 
+#include "game.h"
+
+#define GRID_SIZE 9
+#define GRID 600.0
+#define OFFSET 0
+#define x_offset 0
+#define y_offset 0
+
+#define BOARDTEXTCOLOR "#184e77"
+#define THICKLINESCOLOR "#184e77"
+#define THINLINECOLOR "#184e77"
+#define BUTTONTEXTCOLOR "#d9ed92"
+#define BACKGROUNDCOLOR "#d9ed92"
+#define BUTTONBACKGROUNDCOLOR "#184e77"
+#define ERROR "#ff0000"
+
 using namespace std;
 
 class Window : public QWidget
@@ -38,7 +54,7 @@ public slots:
     void checkButtonClicked();
     void clearButtonClicked();
 private:
-
+    char board[GRID_SIZE][GRID_SIZE];
 signals:
 
 };
