@@ -36,7 +36,6 @@
 #define x_offset 0
 #define y_offset 0
 
-
 #define BOARDTEXTCOLOR "#184e77"
 #define THICKLINESCOLOR "#184e77"
 #define THINLINECOLOR "#184e77"

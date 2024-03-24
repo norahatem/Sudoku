@@ -114,31 +114,37 @@ void Window::openButtonClicked(){
     sud.setBoardFromFile(fileName.toStdString());
     //must call update(), otherwise widget will not be updated
     update();
-
 }
+
 void Window::checkButtonClicked(){
     QString msg;
     qDebug() << "Check button clicked";
+    for(int row = 0; row < 9; row++) {
+        for(int col = 0; col < 9; col++) {
+            if (sud.getCell(row, col) != '0' && !sud.isValidCell(row, col)) {
+                mistakes++;
+            }
+        }
+    }
+
     if(sud.isBoardComplete() && sud.isBoardValid())
         msg = "YOU WON!!";
     else if(sud.isBoardValid())
-        msg = "Board is not complete, no mistakes tho!";
+        msg = "Board is not complete, but no mistakes!";
     else if(sud.isBoardComplete())
-        msg = "You have some mistakes although your baord is complete";
+        msg = "Your board is complete with " + QString::number(mistakes) +"mistakes";
     else
-        msg = "Board not complete and you have mistakes";
+        msg = "Board not complete and you have " + QString::number(mistakes) + " mistakes.";
 
     QMessageBox::information(this, "Check board", msg);
 }
+
 void Window::clearButtonClicked(){
     qDebug() << "Clear button clicked";
     //clear the sudoku board
     sud.clearBoard();
     update();
 }
-// void Window::handleClickedCell(int row, int col){
-//     qDebug() << "Cell clicked at: " << row << ", " << col;
-// }
 
 void Window::handleClickedCell(int row, int col) {
     if (cellBeingEdited) {
