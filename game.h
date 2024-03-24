@@ -22,9 +22,10 @@ public:
     bool isBoardComplete();
     bool isValidCell(int row, int col);
     bool isBoardValid();
-    bool inRow(char value, int row, int col);
-    bool inCol(char value, int row, int col);
-    bool inBox(char value, int row, int col);
+    void setCell(char value, int row, int col);
+    // bool inRow(char value, int row, int col);
+    // bool inCol(char value, int row, int col);
+    // bool inBox(char value, int row, int col);
 
 
 private:

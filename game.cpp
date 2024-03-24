@@ -122,3 +122,7 @@ bool game::isBoardValid(){
     }
     return true;
 }
+
+void game::setCell(char value, int row, int col){
+    s_game[row][col] = value;
+}

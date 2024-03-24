@@ -1,17 +1,12 @@
 #include "window.h"
 
-#include <QPainter>
-#include <QDebug>
-#include <QTextStream>
-#include <QMessageBox>
-
-#include <map>
-#include <vector>
-
 using namespace std;
 
 Window::Window(QWidget *parent) : QWidget(parent)
 {
+    QPalette pal = QPalette();
+    pal.setColor(QPalette::Window, QColor(BACKGROUNDCOLOR));
+    setPalette(pal);
     setFixedSize(GRID + 2*OFFSET, GRID + GRID/10.0);
     setWindowTitle("Sudoku");
     //layouts
@@ -44,6 +39,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     //connect signal (cellClicked) to the slot handle clicked cell
     connect(this, &Window::cellClicked, this, &Window::handleClickedCell);
+
+
 
 }
 
@@ -130,7 +127,56 @@ void Window::clearButtonClicked(){
     sud.clearBoard();
     update();
 }
+// void Window::handleClickedCell(int row, int col){
+//     qDebug() << "Cell clicked at: " << row << ", " << col;
+// }
 
-void Window::handleClickedCell(int row, int col){
-    qDebug() << "Cell clicked at: " << row << ", " << col;
+void Window::handleClickedCell(int row, int col) {
+    if (cellBeingEdited) {
+        // Close the current QLineEdit
+        delete userInput;
+        cellBeingEdited = false;
+    }
+
+    // Create a new QLineEdit for user input
+    userInput = new QLineEdit(this);
+
+    //calculate sizes and coordinates
+    int cellSize = GRID / GRID_SIZE;
+    int textBoxSize = cellSize * 0.7;
+    int x = col * cellSize + OFFSET + (cellSize - textBoxSize) / 2;
+    int y = row * cellSize + OFFSET + (cellSize - textBoxSize) / 2;
+
+    //set validator to only accept values 1-9
+    userInput->setValidator(new QIntValidator(1, 9, this));
+    //setting the alignment in the centre centres the text in the line edit
+    userInput->setAlignment(Qt::AlignCenter);
+    //change properties of the font appearing in the line edit
+    QFont font;
+    QPalette fontPallete;
+    fontPallete.setColor(QPalette::Text, QColor(BOARDTEXTCOLOR));
+    font.setPixelSize(25);
+    userInput->setFont(font);
+    //set geometry of the line edit and show it
+    userInput->setGeometry(x, y, textBoxSize, textBoxSize);
+    userInput->show();
+    cellBeingEdited = true;
+
+    // Connect returnPressed signal to handle return pressed slot
+    connect(userInput, &QLineEdit::returnPressed, this, [this, row, col]() {
+        handleReturnPressed(row, col);
+    });
+}
+
+void Window::handleReturnPressed(int row, int col) {
+    // Get the input value
+    QString input = userInput->text();
+    if (!input.isEmpty()) {
+        //update sudoku
+        sud.setCell(input.at(0).toLatin1(), row, col);
+        update();
+    }
+    //after finishing delete the line edit and assign cellBeingEdited a value of false
+    delete userInput;
+    cellBeingEdited = false;
 }

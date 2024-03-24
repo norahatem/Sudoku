@@ -15,16 +15,27 @@
 #include <QLabel>
 #include <QFrame>
 
+#include <QPainter>
+#include <QDebug>
+#include <QTextStream>
+#include <QMessageBox>
+
+#include <QLineEdit>
+#include <QIntValidator>
+
+#include <QColor>
+
 #include <vector>
 #include <map>
 
 #include "game.h"
 
-#define GRID_SIZE 9
+#define GRID_SIZE 9.0
 #define GRID 600.0
 #define OFFSET 0
 #define x_offset 0
 #define y_offset 0
+
 
 #define BOARDTEXTCOLOR "#184e77"
 #define THICKLINESCOLOR "#184e77"
@@ -54,8 +65,12 @@ public slots:
     void checkButtonClicked();
     void clearButtonClicked();
     void handleClickedCell(int row, int col);
+    void handleReturnPressed(int row, int col);
 private:
     game sud;
+    int mistakes = 0;
+    QLineEdit *userInput = nullptr;
+    bool cellBeingEdited = false;
 signals:
     void cellClicked(int row, int col);
 
