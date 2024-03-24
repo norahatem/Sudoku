@@ -22,6 +22,11 @@ Window::Window(QWidget *parent) : QWidget(parent)
     // QPushButton *solveButton = new QPushButton("Solve", this);
     //QPushButton *randomButton = new QPushButton("Generate Random", this);
 
+    //edit stylesheet of buttons
+    openButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
+    checkButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
+    clearButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
+
     buttonLayout->addWidget(openButton, 1, Qt::AlignRight);
     buttonLayout->addWidget(checkButton, 0);
     buttonLayout->addWidget(clearButton, 0);
@@ -74,6 +79,10 @@ void Window::paintEvent(QPaintEvent * event)
     for(int row = 0; row<9; row++){
         for(int col =0; col<9; col++){
             if(sud.getCell(row, col) != '0'){
+                if(sud.isValidCell(row,col))
+                    painter.setPen(QColor(BOARDTEXTCOLOR));
+                else
+                    painter.setPen(QColor(ERROR));
                 QString buffer = QString(sud.getCell(row,col));
                 painter.drawText((GRID / GRID_SIZE * col + GRID / ((GRID_SIZE * 2) + 2)) + OFFSET,
                                  (GRID / GRID_SIZE * row + GRID / ((GRID_SIZE * 2) - 5)) + OFFSET, buffer);
