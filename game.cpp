@@ -1,24 +1,26 @@
 #include "game.h"
 
 game::game() {
-    // for(int row = 0; row<9;row++){
-    //     for(int col = 0; col<9;col++){
-    //         s_game[row][col] = '0';
-    //     }
-    // }
-
-    char Buffer;
-    std::string line;
-    int row = 0;
-    std::ifstream MyReadFile("D:\\games\\game.txt");
-    while (getline(MyReadFile, line)) {
-        for(int col =0; col< GRID_SIZE; col++){
-            Buffer = line[col];
-            s_game[row][col] = Buffer;
+    for(int row = 0; row<9;row++){
+        for(int col = 0; col<9;col++){
+            s_game[row][col] = '0';
         }
-        row++;
     }
-    MyReadFile.close();
+
+    //We don't need the constructor to read from a specified file, only initialize an empty board
+
+    // char Buffer;
+    // std::string line;
+    // int row = 0;
+    // std::ifstream MyReadFile("D:\\games\\game.txt");
+    // while (getline(MyReadFile, line)) {
+    //     for(int col =0; col< GRID_SIZE; col++){
+    //         Buffer = line[col];
+    //         s_game[row][col] = Buffer;
+    //     }
+    //     row++;
+    // }
+    // MyReadFile.close();
 }
 
 void game::getBoard(char (&board)[GRID_SIZE][GRID_SIZE]){

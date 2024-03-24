@@ -55,6 +55,7 @@ public slots:
     void clearButtonClicked();
 private:
     char board[GRID_SIZE][GRID_SIZE];
+    game sud;
 signals:
 
 };

@@ -49,7 +49,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
 
 
-    game sud;
+    //initialize a sudoku game and get the board
+    // game sud;
     sud.getBoard(board);
 }
 
@@ -103,6 +104,12 @@ void Window::mouseReleaseEvent(QMouseEvent * event)
 //slots to handle buttons
 void Window::openButtonClicked(){
     qDebug() << "Open button clicked";
+    //dialog to select file
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Puzzle"), "D:\\games", tr("Text Files (*.txt)"));
+    sud.setBoardFromFile(fileName.toStdString());
+    sud.getBoard(board);
+    update();
+
 }
 void Window::checkButtonClicked(){
     qDebug() << "Check button clicked";
