@@ -36,12 +36,12 @@
 #define x_offset 0
 #define y_offset 0
 
-#define BOARDTEXTCOLOR "#184e77"
-#define THICKLINESCOLOR "#184e77"
-#define THINLINECOLOR "#184e77"
-#define BUTTONTEXTCOLOR "#d9ed92"
-#define BACKGROUNDCOLOR "#d9ed92"
-#define BUTTONBACKGROUNDCOLOR "#184e77"
+#define BOARDTEXTCOLOR "#03045e"
+#define THICKLINESCOLOR "#03045e"
+#define THINLINECOLOR "#03045e"
+#define BUTTONTEXTCOLOR "#f8fcff"
+#define BACKGROUNDCOLOR "#f8fcff"
+#define BUTTONBACKGROUNDCOLOR "#03045e"
 #define ERROR "#ff0000"
 
 using namespace std;

@@ -7,8 +7,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QPalette pal = QPalette();
     pal.setColor(QPalette::Window, QColor(BACKGROUNDCOLOR));
     setPalette(pal);
-    setFixedSize(GRID + 2*OFFSET, GRID + GRID/10.0);
-    setWindowTitle("Sudoku");
+    setFixedSize(GRID + 2*OFFSET, GRID + GRID/12.5);
+    setWindowTitle("Anwar Sudoku");
     //layouts
     auto *mainLayout = new QVBoxLayout(this);
     auto *buttonLayout = new QHBoxLayout();
