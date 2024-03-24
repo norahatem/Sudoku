@@ -8,19 +8,6 @@ game::game() {
     }
 
     //We don't need the constructor to read from a specified file, only initialize an empty board
-
-    // char Buffer;
-    // std::string line;
-    // int row = 0;
-    // std::ifstream MyReadFile("D:\\games\\game.txt");
-    // while (getline(MyReadFile, line)) {
-    //     for(int col =0; col< GRID_SIZE; col++){
-    //         Buffer = line[col];
-    //         s_game[row][col] = Buffer;
-    //     }
-    //     row++;
-    // }
-    // MyReadFile.close();
 }
 
 void game::getBoard(char (&board)[GRID_SIZE][GRID_SIZE]){
@@ -78,6 +65,7 @@ char game::getCell(int row, int col){
     return s_game[row][col];
 }
 
+//check if the board is filled with values
 bool game::isBoardComplete(){
     for(int row = 0; row <9; row++){
         for(int col = 0; col<9; col++){
@@ -87,6 +75,33 @@ bool game::isBoardComplete(){
     }
     return true;
 }
-bool game::isValidInput(){
 
+//check if a cell value is valid
+bool game::isValidCell(int row, int col){
+    char value = s_game[row][col];
+
+    // Skip the check for empty cells
+    if (value == '0')
+        return true;
+
+    for(int i = 0; i< GRID_SIZE; i++){
+        //check if number is in row
+        if(s_game[row][i] == value && i != col)
+            return false;
+
+        //check if number is in col
+        if (s_game[i][col] == value && i != row)
+            return false;
+    }
+    return true;
+}
+
+bool game::isBoardValid(){
+    for(int row = 0; row<GRID_SIZE; row++){
+        for(int col =0;col<9; col++){
+            if(!isValidCell(row, col))
+                return false;
+        }
+    }
+    return true;
 }

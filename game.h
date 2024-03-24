@@ -20,7 +20,8 @@ public:
     void printBoard();
     char getCell(int row, int col);
     bool isBoardComplete();
-    bool isValidInput();
+    bool isValidCell(int row, int col);
+    bool isBoardValid();
 
 private:
     char s_game[GRID_SIZE][GRID_SIZE];

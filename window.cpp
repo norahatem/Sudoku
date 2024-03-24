@@ -102,10 +102,14 @@ void Window::openButtonClicked(){
 void Window::checkButtonClicked(){
     QString msg;
     qDebug() << "Check button clicked";
-    if(sud.isBoardComplete())
-        msg = "Board is complete";
+    if(sud.isBoardComplete() && sud.isBoardValid())
+        msg = "YOU WON!!";
+    else if(sud.isBoardValid())
+        msg = "Board is not complete, no mistakes tho!";
+    else if(sud.isBoardComplete())
+        msg = "You have some mistakes although your baord is complete";
     else
-        msg = "Board is not complete";
+        msg = "Board not complete and you have mistakes";
 
     QMessageBox::information(this, "Check board", msg);
 }
