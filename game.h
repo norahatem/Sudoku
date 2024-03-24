@@ -18,6 +18,7 @@ public:
     void setBoardFromFile(std::string fileName);
     void clearBoard();
     void printBoard();
+    char getCell(int row, int col);
 
 private:
     char s_game[GRID_SIZE][GRID_SIZE];

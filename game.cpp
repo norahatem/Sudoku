@@ -73,3 +73,7 @@ void game::printBoard(){
         qDebug() << "\n";
     }
 }
+
+char game::getCell(int row, int col){
+    return s_game[row][col];
+}
