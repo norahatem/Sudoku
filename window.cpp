@@ -42,6 +42,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(checkButton, &QPushButton::clicked, this, &Window::checkButtonClicked);
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
 
+    //connect signal (cellClicked) to the slot handle clicked cell
+    connect(this, &Window::cellClicked, this, &Window::handleClickedCell);
+
 }
 
 void Window::paintEvent(QPaintEvent * event)
@@ -86,6 +89,14 @@ void Window::mouseReleaseEvent(QMouseEvent * event)
 {
     // get click position
     qDebug() << "Mouse x " << event->x() << " Mouse y " << event->y();
+    //get where the mouse is clicked, which cell is it
+    int row = event->y() / (GRID/GRID_SIZE);
+    int col = event->x() /(GRID/GRID_SIZE);
+    if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE)
+    {
+        //emit a signal with the row and column of the clicked cell
+        emit cellClicked(row, col);
+    }
 }
 
 //slots to handle buttons
@@ -118,4 +129,8 @@ void Window::clearButtonClicked(){
     //clear the sudoku board
     sud.clearBoard();
     update();
+}
+
+void Window::handleClickedCell(int row, int col){
+    qDebug() << "Cell clicked at: " << row << ", " << col;
 }

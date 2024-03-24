@@ -22,6 +22,10 @@ public:
     bool isBoardComplete();
     bool isValidCell(int row, int col);
     bool isBoardValid();
+    bool inRow(char value, int row, int col);
+    bool inCol(char value, int row, int col);
+    bool inBox(char value, int row, int col);
+
 
 private:
     char s_game[GRID_SIZE][GRID_SIZE];

@@ -53,9 +53,11 @@ public slots:
     void openButtonClicked();
     void checkButtonClicked();
     void clearButtonClicked();
+    void handleClickedCell(int row, int col);
 private:
     game sud;
 signals:
+    void cellClicked(int row, int col);
 
 };
 
