@@ -19,21 +19,22 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QPushButton *openButton = new QPushButton("Open", this);
     QPushButton *checkButton = new QPushButton("Check", this);
     QPushButton *clearButton = new QPushButton("Clear", this);
-    // QPushButton *solveButton = new QPushButton("Solve", this);
+    QPushButton *solveButton = new QPushButton("Solve", this);
     QPushButton *randomButton = new QPushButton("Random Board", this);
 
     //edit stylesheet of buttons
-    openButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
-    checkButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
-    clearButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
-    randomButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
+    QString style = "background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";";
+    openButton->setStyleSheet(style);
+    checkButton->setStyleSheet(style);
+    clearButton->setStyleSheet(style);
+    randomButton->setStyleSheet(style);
+    solveButton->setStyleSheet(style);
 
     buttonLayout->addWidget(openButton, 1, Qt::AlignRight);
     buttonLayout->addWidget(checkButton, 0);
     buttonLayout->addWidget(clearButton, 0);
     buttonLayout->addWidget(randomButton, 0);
-    // hbox->addWidget(solveButton, 0);
-    // hbox->addWidget(randomButton, 0);
+    buttonLayout->addWidget(solveButton, 0);
 
 
     mainLayout->addStretch(1);
@@ -44,11 +45,11 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(checkButton, &QPushButton::clicked, this, &Window::checkButtonClicked);
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
     connect(randomButton, &QPushButton::clicked, this, &Window::randomButtonClicked);
+    connect(solveButton, &QPushButton::clicked, this, &Window::solveButtonClicked);
+
 
     //connect signal (cellClicked) to the slot handle clicked cell
     connect(this, &Window::cellClicked, this, &Window::handleClickedCell);
-
-
 
 }
 
@@ -227,8 +228,9 @@ void Window::handleReturnPressed(int row, int col) {
 
 void Window::randomButtonClicked(){
     qDebug() << "Random button clicked";
-    sud.generateRandom(9,40);
-    sud.setBoardFromFile("D:\\games\\randomGame.txt");
+    //9 is the grid size and the other number is the number of empty cells
+    sud.generateRandom(9,46);
+    //sud.setBoardFromFile("D:\\games\\randomGame.txt");
     predefinedCells();
     update();
 }
@@ -246,4 +248,8 @@ void Window::predefinedCells(){
             }
         }
     }
+}
+
+void Window::solveButtonClicked(){
+    qDebug() << "Solve button clicked";
 }

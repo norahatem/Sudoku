@@ -9,11 +9,11 @@ class Sudoku
 public:
     int **mat;
     int N;
-
     // number of columns/rows.
-    int SRN;
 
+    int SRN;
     // square root of N
+
     int K;
     // No. Of missing digits
 
@@ -60,6 +60,7 @@ public:
 
     //write board to file
     void writeToFile(const string &filename);
+
 };
 
 // This code is contributed by Aarti_Rathi

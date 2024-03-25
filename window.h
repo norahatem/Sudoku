@@ -67,6 +67,8 @@ public slots:
     void handleClickedCell(int row, int col);
     void handleReturnPressed(int row, int col);
     void randomButtonClicked();
+    void solveButtonClicked();
+
 private:
     game sud;
     int mistakes = 0;

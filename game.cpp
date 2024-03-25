@@ -129,5 +129,11 @@ void game::generateRandom(int N, int K){
     srand(time(0));
     Sudoku *sudoku = new Sudoku(N, K);
     sudoku->fillValues();
-    sudoku->writeToFile("D:\\games\\randomGame.txt");
+    for(int row = 0; row<GRID_SIZE; row++){
+        for(int col = 0; col< GRID_SIZE; col++){
+            //convert from integer to char
+            s_game[row][col] = sudoku->mat[row][col] + '0';
+        }
+    }
 }
+
