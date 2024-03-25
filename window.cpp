@@ -55,10 +55,39 @@ void Window::paintEvent(QPaintEvent * event)
     QPen pen;
     QFont font;
     font.setPixelSize(30);
-    pen.setWidth(4);
+    //pen.setWidth(4);
     painter.setPen(pen);
     painter.setFont(font);
 
+    //code to print the board (numbers)
+    for(int row = 0; row<9; row++){
+        for(int col =0; col<9; col++){
+            if(sud.getCell(row, col) != '0'){
+                if(sud.isValidCell(row,col))
+                    painter.setPen(QColor(BOARDTEXTCOLOR));
+                else
+                    painter.setPen(QColor(ERROR));
+
+
+                // Determine if the cell is predefined
+                bool isPredefined = noEdit[row][col];
+
+                // Define background color based on whether the cell is predefined or not
+                QColor backgroundColor = isPredefined ? QColor(PREDEFINEDCELLCOLOR) : QColor(BACKGROUNDCOLOR);
+                //draw rectangle with a different background for the numbers that are predefined by file
+                painter.fillRect(col * (GRID / GRID_SIZE) + x_offset , row * (GRID / GRID_SIZE) + y_offset , GRID / GRID_SIZE,
+                                 GRID / GRID_SIZE, backgroundColor);
+
+
+                //code to print numbers
+                QString buffer = QString(sud.getCell(row,col));
+                painter.drawText((GRID / GRID_SIZE * col + GRID / ((GRID_SIZE * 2) + 2)) + OFFSET,
+                                 (GRID / GRID_SIZE * row + GRID / ((GRID_SIZE * 2) - 5)) + OFFSET, buffer);
+            }
+        }
+    }
+
+    //draw grid after backgound as the rectangles hide the grid
     //draw the grid of the sudoku
     for(int i= 0; i<GRID_SIZE+1; i++){
         //set default line width to 1
@@ -72,22 +101,6 @@ void Window::paintEvent(QPaintEvent * event)
 
         // Draw vertical lines
         painter.drawLine((i * (GRID / 9.0))+y_offset, y_offset,( i * (GRID / 9.0))+y_offset, GRID +y_offset);
-    }
-
-
-    //code to print the board (numbers)
-    for(int row = 0; row<9; row++){
-        for(int col =0; col<9; col++){
-            if(sud.getCell(row, col) != '0'){
-                if(sud.isValidCell(row,col))
-                    painter.setPen(QColor(BOARDTEXTCOLOR));
-                else
-                    painter.setPen(QColor(ERROR));
-                QString buffer = QString(sud.getCell(row,col));
-                painter.drawText((GRID / GRID_SIZE * col + GRID / ((GRID_SIZE * 2) + 2)) + OFFSET,
-                                 (GRID / GRID_SIZE * row + GRID / ((GRID_SIZE * 2) - 5)) + OFFSET, buffer);
-            }
-        }
     }
 }
 
@@ -112,6 +125,20 @@ void Window::openButtonClicked(){
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Puzzle"), "D:\\games", tr("Text Files (*.txt)"));
     //call the setBaord from file for the original sudoku which is declared as game
     sud.setBoardFromFile(fileName.toStdString());
+
+    //populate the noEdit array here to indicate whether this cell can be edited or not
+    //if a cell can be edited, 0, if a cell can't 1
+
+    for(int row=0; row<GRID_SIZE; row++){
+        for(int col=0; col<GRID_SIZE; col++){
+            if(sud.getCell(row, col) == '0'){
+                noEdit[row][col] = false;
+            }else{
+                noEdit[row][col] = true;
+            }
+        }
+    }
+
     //must call update(), otherwise widget will not be updated
     update();
 }
@@ -119,6 +146,7 @@ void Window::openButtonClicked(){
 void Window::checkButtonClicked(){
     QString msg;
     qDebug() << "Check button clicked";
+    mistakes = 0;
     for(int row = 0; row < 9; row++) {
         for(int col = 0; col < 9; col++) {
             if (sud.getCell(row, col) != '0' && !sud.isValidCell(row, col)) {
@@ -132,7 +160,7 @@ void Window::checkButtonClicked(){
     else if(sud.isBoardValid())
         msg = "Board is not complete, but no mistakes!";
     else if(sud.isBoardComplete())
-        msg = "Your board is complete with " + QString::number(mistakes) +"mistakes";
+        msg = "Your board is complete with " + QString::number(mistakes) +" mistakes";
     else
         msg = "Board not complete and you have " + QString::number(mistakes) + " mistakes.";
 
@@ -153,11 +181,17 @@ void Window::handleClickedCell(int row, int col) {
         cellBeingEdited = false;
     }
 
+    // Check if cell can be edited or not
+    if (noEdit[row][col]) {
+        // Cell cannot be edited, return early
+        //this is to prevent the program from crashing habibty okay
+        return;
+    }
+
     // Create a new QLineEdit for user input
     userInput = new QLineEdit(this);
 
     //calculate sizes and coordinates
-    int cellSize = GRID / GRID_SIZE;
     int textBoxSize = cellSize * 0.7;
     int x = col * cellSize + OFFSET + (cellSize - textBoxSize) / 2;
     int y = row * cellSize + OFFSET + (cellSize - textBoxSize) / 2;

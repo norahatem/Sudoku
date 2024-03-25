@@ -43,6 +43,7 @@
 #define BACKGROUNDCOLOR "#f8fcff"
 #define BUTTONBACKGROUNDCOLOR "#03045e"
 #define ERROR "#ff0000"
+#define PREDEFINEDCELLCOLOR "#e0f1ff"
 
 using namespace std;
 
@@ -70,6 +71,8 @@ private:
     int mistakes = 0;
     QLineEdit *userInput = nullptr;
     bool cellBeingEdited = false;
+    bool noEdit[9][9];
+    int cellSize = GRID / GRID_SIZE;
 signals:
     void cellClicked(int row, int col);
 

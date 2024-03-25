@@ -97,10 +97,8 @@ bool game::isValidCell(int row, int col){
     //to implement the checking of the cell in the small box, you need to
     //identify the starting point of the box whether it is the x direction
     //or y direction
-    //to do this, we will steal code from ChatGPT :(
-    int startRow = (row / 3) * 3;  // Starting row index of the subgrid
-    int startCol = (col / 3) * 3;  // Starting column index of the subgrid
-    //will have to figure out later why is it like this but for now let's just use it
+    int startRow = (row / 3) * 3;
+    int startCol = (col / 3) * 3;
 
     //code to check from start row and column to 3 cells plus which is the small box
     for(int i = startRow; i< startRow + 3; i++){
