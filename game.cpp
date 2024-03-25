@@ -124,3 +124,10 @@ bool game::isBoardValid(){
 void game::setCell(char value, int row, int col){
     s_game[row][col] = value;
 }
+
+void game::generateRandom(int N, int K){
+    srand(time(0));
+    Sudoku *sudoku = new Sudoku(N, K);
+    sudoku->fillValues();
+    sudoku->writeToFile("D:\\games\\randomGame.txt");
+}

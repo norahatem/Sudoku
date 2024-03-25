@@ -30,8 +30,8 @@
 
 #include "game.h"
 
-#define GRID_SIZE 9.0
-#define GRID 600.0
+#define GRID_SIZE 9
+#define GRID 600
 #define OFFSET 0
 #define x_offset 0
 #define y_offset 0
@@ -66,6 +66,7 @@ public slots:
     void clearButtonClicked();
     void handleClickedCell(int row, int col);
     void handleReturnPressed(int row, int col);
+    void randomButtonClicked();
 private:
     game sud;
     int mistakes = 0;
@@ -73,6 +74,7 @@ private:
     bool cellBeingEdited = false;
     bool noEdit[9][9];
     int cellSize = GRID / GRID_SIZE;
+    void predefinedCells();
 signals:
     void cellClicked(int row, int col);
 

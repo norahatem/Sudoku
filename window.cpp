@@ -20,16 +20,18 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QPushButton *checkButton = new QPushButton("Check", this);
     QPushButton *clearButton = new QPushButton("Clear", this);
     // QPushButton *solveButton = new QPushButton("Solve", this);
-    //QPushButton *randomButton = new QPushButton("Generate Random", this);
+    QPushButton *randomButton = new QPushButton("Random Board", this);
 
     //edit stylesheet of buttons
     openButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
     checkButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
     clearButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
+    randomButton->setStyleSheet("background-color: " BUTTONBACKGROUNDCOLOR "; color: " BUTTONTEXTCOLOR ";");
 
     buttonLayout->addWidget(openButton, 1, Qt::AlignRight);
     buttonLayout->addWidget(checkButton, 0);
     buttonLayout->addWidget(clearButton, 0);
+    buttonLayout->addWidget(randomButton, 0);
     // hbox->addWidget(solveButton, 0);
     // hbox->addWidget(randomButton, 0);
 
@@ -41,6 +43,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(openButton, &QPushButton::clicked, this, &Window::openButtonClicked);
     connect(checkButton, &QPushButton::clicked, this, &Window::checkButtonClicked);
     connect(clearButton, &QPushButton::clicked, this, &Window::clearButtonClicked);
+    connect(randomButton, &QPushButton::clicked, this, &Window::randomButtonClicked);
 
     //connect signal (cellClicked) to the slot handle clicked cell
     connect(this, &Window::cellClicked, this, &Window::handleClickedCell);
@@ -63,6 +66,7 @@ void Window::paintEvent(QPaintEvent * event)
     for(int row = 0; row<9; row++){
         for(int col =0; col<9; col++){
             if(sud.getCell(row, col) != '0'){
+
                 if(sud.isValidCell(row,col))
                     painter.setPen(QColor(BOARDTEXTCOLOR));
                 else
@@ -75,8 +79,8 @@ void Window::paintEvent(QPaintEvent * event)
                 // Define background color based on whether the cell is predefined or not
                 QColor backgroundColor = isPredefined ? QColor(PREDEFINEDCELLCOLOR) : QColor(BACKGROUNDCOLOR);
                 //draw rectangle with a different background for the numbers that are predefined by file
-                painter.fillRect(col * (GRID / GRID_SIZE) + x_offset , row * (GRID / GRID_SIZE) + y_offset , GRID / GRID_SIZE,
-                                 GRID / GRID_SIZE, backgroundColor);
+                painter.fillRect(col * (600.0 / 9.0) + x_offset , row * (600.0 / 9.0) + y_offset, 600.0 / 9.0 ,
+                                 600.0 / 9.0 , backgroundColor);
 
 
                 //code to print numbers
@@ -126,18 +130,7 @@ void Window::openButtonClicked(){
     //call the setBaord from file for the original sudoku which is declared as game
     sud.setBoardFromFile(fileName.toStdString());
 
-    //populate the noEdit array here to indicate whether this cell can be edited or not
-    //if a cell can be edited, 0, if a cell can't 1
-
-    for(int row=0; row<GRID_SIZE; row++){
-        for(int col=0; col<GRID_SIZE; col++){
-            if(sud.getCell(row, col) == '0'){
-                noEdit[row][col] = false;
-            }else{
-                noEdit[row][col] = true;
-            }
-        }
-    }
+    predefinedCells();
 
     //must call update(), otherwise widget will not be updated
     update();
@@ -228,4 +221,27 @@ void Window::handleReturnPressed(int row, int col) {
     //after finishing delete the line edit and assign cellBeingEdited a value of false
     delete userInput;
     cellBeingEdited = false;
+}
+
+void Window::randomButtonClicked(){
+    qDebug() << "Random button clicked";
+    sud.generateRandom(9,40);
+    sud.setBoardFromFile("D:\\games\\randomGame.txt");
+    predefinedCells();
+    update();
+}
+
+void Window::predefinedCells(){
+    //populate the noEdit array here to indicate whether this cell can be edited or not
+    //if a cell can be edited, 0, if a cell can't 1
+
+    for(int row=0; row<GRID_SIZE; row++){
+        for(int col=0; col<GRID_SIZE; col++){
+            if(sud.getCell(row, col) == '0'){
+                noEdit[row][col] = false;
+            }else{
+                noEdit[row][col] = true;
+            }
+        }
+    }
 }

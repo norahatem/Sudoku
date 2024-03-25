@@ -7,6 +7,8 @@
 #include <QTextStream>
 #include <QMessageBox>
 
+#include "sudoku.h"
+
 #define GRID_SIZE 9
 
 class game
@@ -23,6 +25,7 @@ public:
     bool isValidCell(int row, int col);
     bool isBoardValid();
     void setCell(char value, int row, int col);
+    void generateRandom(int N, int K);
     // bool inRow(char value, int row, int col);
     // bool inCol(char value, int row, int col);
     // bool inBox(char value, int row, int col);
