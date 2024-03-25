@@ -67,14 +67,14 @@ void Window::paintEvent(QPaintEvent * event)
         for(int col =0; col<9; col++){
             if(sud.getCell(row, col) != '0'){
 
-                if(sud.isValidCell(row,col))
-                    painter.setPen(QColor(BOARDTEXTCOLOR));
-                else
-                    painter.setPen(QColor(ERROR));
-
-
                 // Determine if the cell is predefined
                 bool isPredefined = noEdit[row][col];
+
+                if(!isPredefined && !sud.isValidCell(row, col))
+                    painter.setPen(QColor(ERROR));
+                else
+                    painter.setPen(QColor(BOARDTEXTCOLOR));
+
 
                 // Define background color based on whether the cell is predefined or not
                 QColor backgroundColor = isPredefined ? QColor(PREDEFINEDCELLCOLOR) : QColor(BACKGROUNDCOLOR);
@@ -139,10 +139,12 @@ void Window::openButtonClicked(){
 void Window::checkButtonClicked(){
     QString msg;
     qDebug() << "Check button clicked";
+    bool isPredefined;
     mistakes = 0;
     for(int row = 0; row < 9; row++) {
         for(int col = 0; col < 9; col++) {
-            if (sud.getCell(row, col) != '0' && !sud.isValidCell(row, col)) {
+            isPredefined = noEdit[row][col];
+            if (sud.getCell(row, col) != '0' && !sud.isValidCell(row, col) && !isPredefined) {
                 mistakes++;
             }
         }
